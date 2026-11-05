@@ -40,6 +40,14 @@ To host it, upload the folder to any static host (GitHub Pages, Netlify, Vercel,
 
 To add words, edit the lists in `js/data/words.js`. To add a theme, add a row in `js/data/themes.js`.
 
+## Releasing
+
+Before each push, bump the version in `index.html`: the `?v=` on every css and js link and the footer `v1.x`. Browsers then fetch the new files on a normal refresh instead of using their 10 minute cache.
+
+```bash
+sed -i 's/?v=1\.2/?v=1.3/g; s/>v1\.2</>v1.3</' index.html
+```
+
 ## Privacy and credits
 
 - Privacy page: `#/privacy`. Nothing leaves the browser except font requests to Google Fonts.
