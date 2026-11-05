@@ -21,6 +21,7 @@
     { k: 'customText', def: 'Paste or type your own text here. Code works too: local part = Instance.new("Part")', type: 'text', hidden: true },
     { k: 'customShuffle', def: false, type: 'bool', hidden: true },
     { k: 'customLimit', def: 0, type: 'num', min: 0, max: 5000, hidden: true },
+    { k: 'name', def: '', type: 'name', hidden: true },
 
     { k: 'language', def: 'roblox', opts: ['roblox'], hidden: true },
     { k: 'difficulty', group: 'behavior', icon: 'bolt', label: 'difficulty', def: 'normal', opts: ['normal', 'expert', 'master'], desc: 'Expert fails the test when you submit a wrong word. Master fails it on any wrong key.' },
@@ -82,6 +83,7 @@
       case 'list': return Array.isArray(v) ? v.filter(x => typeof x === 'string') : undefined;
       case 'mods': return Array.isArray(v) ? [...new Set(v.filter(x => LT.MODS[x]))] : undefined;
       case 'obj': return v && typeof v === 'object' ? v : (v === null ? null : undefined);
+      case 'name': return typeof v === 'string' ? [...v.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2066-\u2069]/g, '').replace(/\s+/g, ' ').trim()].slice(0, 24).join('').trim() : undefined;
       default: return typeof v === 'string' ? v : undefined;
     }
   };

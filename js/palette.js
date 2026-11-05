@@ -60,6 +60,7 @@
         { label: 'font…', icon: 'type', right: S.get('font'), run: fontMenu },
         { label: 'challenge mods…', icon: 'flame', right: S.get('mods').length ? S.get('mods').length + ' on' : '', run: modsMenu },
         { label: 'custom text…', icon: 'edit', run: () => LT.Settings.customTextModal() },
+        { label: 'set name…', icon: 'user', right: U.esc(S.get('name')), run: () => ({ title: 'your name', input: { value: S.get('name'), placeholder: 'your name, up to 24 characters', submit: v => { S.set('name', v); FX.toast(`Hi ${S.get('name')}!`, { icon: 'user' }); } } }) },
         { label: 'go to settings', icon: 'settings', run: go('#/settings') },
         { label: 'go to stats', icon: 'crown', run: go('#/stats') },
         { label: 'go to about', icon: 'info', run: go('#/about') },

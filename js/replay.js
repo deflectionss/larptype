@@ -117,15 +117,21 @@
     c.beginPath(); c.moveTo(4, 10); c.lineTo(12, 10); c.stroke();
     c.restore();
     c.textBaseline = 'alphabetic';
-    c.font = `700 40px ${fam}`; c.fillStyle = th.sub; c.fillText('larp', 144, 122);
-    const lw = c.measureText('larp').width; c.fillStyle = th.text; c.fillText('type', 144 + lw, 122);
-    const info = LT.Progress.levelInfo(LT.DB.profile.xp);
-    c.font = `500 22px ${fam}`; c.textAlign = 'right'; c.fillStyle = th.sub;
-    c.fillText(`level ${info.lvl} · ${LT.Progress.rank(info.lvl)}`, W - 90, 104);
-    c.fillText(new Date(r.ts).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }), W - 90, 136);
+    c.font = `900 40px ${fam}`; c.fillStyle = th.text; c.fillText('larptype', 144, 122);
+    const info = LT.Progress.levelInfo(LT.DB.profile.xp), name = S.get('name');
+    const day = new Date(r.ts).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    c.textAlign = 'right';
+    if (name) {
+      c.font = `800 30px ${fam}`; c.fillStyle = th.text; c.fillText(name, W - 90, 106);
+      c.font = `500 20px ${fam}`; c.fillStyle = th.sub; c.fillText(`level ${info.lvl} · ${LT.Progress.rank(info.lvl)} · ${day}`, W - 90, 138);
+    } else {
+      c.font = `500 22px ${fam}`; c.fillStyle = th.sub;
+      c.fillText(`level ${info.lvl} · ${LT.Progress.rank(info.lvl)}`, W - 90, 104);
+      c.fillText(day, W - 90, 136);
+    }
     c.textAlign = 'left';
     c.fillStyle = th.sub; c.font = `500 30px ${fam}`; c.fillText('wpm', 90, 230);
-    c.fillStyle = th.main; c.font = `600 150px ${fam}`; c.fillText(String(Math.round(r.wpm)), 84, 370);
+    c.fillStyle = th.main; c.font = `900 150px ${fam}`; c.fillText(String(Math.round(r.wpm)), 84, 370);
     c.fillStyle = th.sub; c.font = `500 30px ${fam}`; c.fillText('acc', 90, 440);
     c.fillStyle = th.main; c.font = `600 64px ${fam}`; c.fillText(Math.round(r.acc) + '%', 88, 510);
     const sx = 470;

@@ -42,7 +42,7 @@
   const privacyHTML = () => `<div class="about">
     <div class="card"><h2>privacy</h2>
       <p>larptype has no accounts, no ads, no analytics and no tracking cookies.</p>
-      <p><b>What is saved.</b> Your settings, test results, personal bests, key stats, xp and badges are saved in your browser's local storage, on this device only. larptype never sends them anywhere.</p>
+      <p><b>What is saved.</b> Your name, settings, test results, personal bests, key stats, xp and badges are saved in your browser's local storage, on this device only. larptype never sends them anywhere.</p>
       <p><b>Fonts.</b> Fonts are loaded from Google Fonts. To download them, your browser connects to Google's servers, which can see your IP address. Google explains how it handles this in its ${ext('https://policies.google.com/privacy', 'privacy policy')}.</p>
       <p><b>Hosting.</b> The service that hosts this website may keep standard server logs, such as IP addresses and which pages were requested.</p>
       <p><b>Clipboard and files.</b> larptype only uses your clipboard when you press a copy button, and only creates a file when you press export or save.</p>
@@ -131,6 +131,7 @@
   const appliers = {
     theme: () => { Theme.applyCurrent(); U.$('#themeName').textContent = S.get('theme'); },
     customTheme: () => { if (S.get('theme') === 'custom') Theme.applyCurrent(); },
+    name: () => { LT.Progress.updateChip(false); LT.Stats.syncName(); },
     font: () => Theme.setFont(S.get('font')).then(() => { V.relayout(); syncConfig(); }),
     fontSize: () => { Theme.setFontSize(S.get('fontSize')); V.relayout(); },
     motion: () => Theme.setMotion(S.get('motion')),

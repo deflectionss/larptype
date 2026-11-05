@@ -44,15 +44,54 @@
 
   const historyRows = n => DB.results.slice(-n).reverse().map(r => `<tr><td>${U.esc(U.fmtDate(r.ts))}</td><td>${U.esc(LT.Results.modeLabel(r))}</td><td class="${r.failed ? 'fail' : 'pbm'}">${Math.round(r.wpm)}</td><td>${Math.round(r.raw)}</td><td>${Math.round(r.acc)}%</td><td>${Math.round(r.cons)}%</td><td>${r.chars.join('/')}</td><td>${r.failed ? 'failed' : r.mods.map(m => LT.MODS[m].name).join(', ')}</td></tr>`).join('');
 
+  let editing = false;
+  const nameView = () => {
+    const name = S.get('name'), rank = P.rank(P.levelInfo(DB.profile.xp).lvl);
+    return `<h2 data-act="name">${U.esc(name || rank)}</h2><button class="icon-btn prof-edit" data-act="name" data-tip="${name ? 'change your name' : 'set your name'}" aria-label="change your name">${U.icon('edit')}</button>`;
+  };
+  const subLine = () => {
+    const pr = DB.profile, info = P.levelInfo(pr.xp), name = S.get('name');
+    return `${name ? U.esc(P.rank(info.lvl)) + ' · ' : ''}level ${info.lvl} · ${U.fmtNum(info.into)} / ${U.fmtNum(info.need)} xp to next · ${U.fmtNum(pr.xp)} xp total`;
+  };
+  St.syncName = () => {
+    if (!page || editing) return;
+    const box = page.querySelector('#profName'), sub = page.querySelector('#profSub');
+    if (box) box.innerHTML = nameView();
+    if (sub) sub.innerHTML = subLine();
+  };
+  const editName = () => {
+    const box = page.querySelector('#profName');
+    if (!box || editing) return;
+    editing = true;
+    box.innerHTML = '<input class="prof-input" maxlength="24" spellcheck="false" autocomplete="off" placeholder="your name" aria-label="your name">';
+    const inp = box.querySelector('input');
+    inp.value = S.get('name');
+    inp.focus();
+    inp.select();
+    const finish = save => {
+      if (!editing) return;
+      editing = false;
+      if (save) S.set('name', inp.value);
+      St.syncName();
+    };
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); finish(true); }
+      else if (e.key === 'Escape') { e.preventDefault(); finish(false); }
+      e.stopPropagation();
+    });
+    inp.addEventListener('blur', () => finish(true));
+  };
+
   St.show = () => {
     page = U.$('#page-stats');
+    editing = false;
     if (chart) { chart.destroy(); chart = null; }
     const pr = DB.profile, info = P.levelInfo(pr.xp), ok = DB.results.filter(r => !r.failed);
     const last10 = ok.slice(-10), best = ok.length ? Math.max(...ok.map(r => r.wpm)) : 0;
     const earned = Object.keys(pr.badges).length;
     page.innerHTML = `<div class="st-wrap">
       <div class="card prof"><div class="prof-av"><b>${info.lvl}</b></div>
-        <div class="prof-mid"><h2>${U.esc(P.rank(info.lvl))}</h2><div class="muted">level ${info.lvl} · ${U.fmtNum(info.into)} / ${U.fmtNum(info.need)} xp to next · ${U.fmtNum(pr.xp)} xp total</div><div class="xp-bar"><i style="transform:scaleX(${info.pct})"></i></div></div>
+        <div class="prof-mid"><div class="prof-name" id="profName">${nameView()}</div><div class="muted" id="profSub">${subLine()}</div><div class="xp-bar"><i style="transform:scaleX(${info.pct})"></i></div></div>
         <div class="prof-tot">
           <div class="tot"><div class="k">tests completed</div><div class="v">${U.fmtNum(pr.completed)}</div></div>
           <div class="tot"><div class="k">tests started</div><div class="v">${U.fmtNum(pr.started)}</div></div>
@@ -89,6 +128,7 @@
   St.init = () => {
     page = U.$('#page-stats');
     page.addEventListener('click', e => {
+      if (e.target.closest('[data-act="name"]')) { editName(); return; }
       const b = e.target.closest('button');
       if (!b) return;
       const seg = b.closest('[data-seg]');

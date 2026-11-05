@@ -83,9 +83,10 @@
     const info = P.levelInfo(DB.profile.xp);
     const num = document.getElementById('lvlNum');
     if (!num) return;
+    const name = LT.S.get('name');
     num.textContent = info.lvl;
-    document.getElementById('lvlTitle').textContent = P.rank(info.lvl);
-    document.getElementById('lvlXp').textContent = `${U.fmtNum(info.into)} / ${U.fmtNum(info.need)} xp`;
+    document.getElementById('lvlTitle').textContent = name || P.rank(info.lvl);
+    document.getElementById('lvlXp').textContent = `${name ? P.rank(info.lvl) + ' · ' : ''}${U.fmtNum(info.into)} / ${U.fmtNum(info.need)} xp`;
     const fill = document.querySelector('.lvl-fill');
     if (!animate) fill.style.transition = 'none';
     fill.style.strokeDashoffset = String(94.25 * (1 - info.pct));

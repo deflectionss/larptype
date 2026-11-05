@@ -175,6 +175,15 @@ textarea.field { resize: vertical; min-height: 140px; line-height: 1.5; }
 .prof-av:hover { transform: rotate(4deg) scale(1.04); }
 .prof-av b { color: var(--bg); font-size: 2rem; font-weight: 900; transform: rotate(8deg); }
 .prof-mid h2 { margin: 0; font-size: 1.5rem; color: var(--text); font-weight: 900; }
+.prof-name { display: flex; align-items: center; gap: 4px; min-height: 40px; min-width: 0; }
+.prof-name h2 { cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color var(--t-fast); }
+.prof-name h2:hover { color: var(--main); }
+.prof-edit { width: 32px; height: 32px; border-radius: 10px; flex: none; }
+.prof-edit svg { width: 15px; height: 15px; }
+.prof-input { width: min(100%, 380px); font: inherit; font-size: 1.5rem; font-weight: 900; color: var(--text); background: var(--bg); border: 0; border-radius: 12px; padding: 1px 12px; outline: none; box-shadow: 0 0 0 2px var(--main); }
+.prof-input::placeholder { color: var(--sub); }
+.name-field { width: 260px; border-radius: 999px; background: var(--sub-alt); box-shadow: inset 0 0 0 1px var(--line); font-weight: 800; }
+.name-field:focus { box-shadow: 0 0 0 2px var(--main); }
 .prof-mid .muted { font-size: .8rem; }
 .prof-mid .xp-bar { margin-top: 12px; height: 8px; background: var(--bg); }
 .prof-tot { display: grid; grid-template-columns: repeat(3, auto); gap: 6px 28px; }

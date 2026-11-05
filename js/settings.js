@@ -1,7 +1,7 @@
 (() => {
   const U = LT.U, S = LT.S, FX = LT.FX, DB = LT.DB;
   const St = { built: false };
-  const GROUPS = [['behavior', 'bolt'], ['caret', 'type'], ['appearance', 'eye'], ['theme', 'palette'], ['challenge', 'flame'], ['data', 'download']];
+  const GROUPS = [['profile', 'user'], ['behavior', 'bolt'], ['caret', 'type'], ['appearance', 'eye'], ['theme', 'palette'], ['challenge', 'flame'], ['data', 'download']];
   const CT_LABELS = { bg: 'background', subAlt: 'panels', sub: 'sub text', text: 'text', main: 'accent', caret: 'caret', error: 'error', errorExtra: 'extra error' };
   let page, ctDraft = null, themeFilter = 'all';
 
@@ -25,6 +25,8 @@
     if (d.type === 'mods') return `<div class="set-row full" data-row="${d.k}" data-search="mods challenge ${Object.values(LT.MODS).map(m => m.name).join(' ')}"><div><div class="set-title">${U.icon(d.icon)}${d.label}</div><div class="set-desc">${d.desc}</div></div><div class="mods-grid">${Object.keys(LT.MODS).map(m => `<button class="mod-tile ${S.get('mods').includes(m) ? 'active' : ''}" data-mod="${m}">${U.icon(LT.MODS[m].icon)}<div><b>${LT.MODS[m].name}</b><span>${LT.MODS[m].desc}</span></div></button>`).join('')}</div></div>`;
     return `<div class="set-row" data-row="${d.k}" data-search="${U.esc((d.label + ' ' + (d.desc || '')).toLowerCase())}"><div><div class="set-title">${U.icon(d.icon || 'settings')}${d.label}</div>${d.desc ? `<div class="set-desc">${d.desc}</div>` : ''}</div>${control(d)}</div>`;
   };
+
+  const profileRows = () => `<div class="set-row" data-row="name" data-search="name profile username display player"><div><div class="set-title">${U.icon('user')}name</div><div class="set-desc">Shown on your profile, next to your level in the header and on share cards. Up to 24 characters. Leave it empty to show your rank instead.</div></div><div class="ctl"><input class="field name-field" id="setName" maxlength="24" spellcheck="false" autocomplete="off" placeholder="your name" value="${U.esc(S.get('name'))}" aria-label="your name"></div></div>`;
 
   const dataRows = () => `
     <div class="set-row" data-search="export import settings code share"><div><div class="set-title">${U.icon('upload')}settings code</div><div class="set-desc">Copy your settings as a code, or paste one to load it.</div></div><div class="data-actions"><button class="btn" data-d="export">${U.icon('copy')}copy code</button><button class="btn" data-d="import">${U.icon('download')}import code</button></div></div>
@@ -58,7 +60,7 @@
     S.schema.forEach(d => { if (d.group) (groups[d.group] = groups[d.group] || []).push(d); });
     page.innerHTML = `<div class="set-wrap"><nav class="set-nav"><span class="set-nav-ind"></span>${GROUPS.map(([g]) => `<a href="#/settings" data-go="${g}">${g}</a>`).join('')}</nav>
       <div class="set-main"><div class="set-search"><div class="set-search-wrap">${U.icon('search')}<input class="field" id="setSearch" placeholder="search settings" autocomplete="off" spellcheck="false"></div></div>
-      ${GROUPS.map(([g, ic]) => `<section class="set-group" id="sg-${g}" data-group="${g}"><h2>${U.icon(ic)}${g}</h2>${g === 'data' ? dataRows() : (groups[g] || []).map(row).join('')}</section>`).join('')}</div></div>`;
+      ${GROUPS.map(([g, ic]) => `<section class="set-group" id="sg-${g}" data-group="${g}"><h2>${U.icon(ic)}${g}</h2>${g === 'data' ? dataRows() : g === 'profile' ? profileRows() : (groups[g] || []).map(row).join('')}</section>`).join('')}</div></div>`;
     themeGrid(); ctGrid();
     LT.Theme.FONTS.forEach(f => LT.Theme.loadFont(f.name, { textOnly: true }));
     bind();
@@ -68,6 +70,7 @@
   const sync = k => {
     if (!St.built) return;
     if (k === 'theme' || k === 'favThemes' || k === 'customTheme') { themeGrid(); return; }
+    if (k === 'name') { const n = page.querySelector('#setName'); if (n && document.activeElement !== n) n.value = S.get('name'); return; }
     if (k === 'font') { U.$$('.font-tile', page).forEach(b => b.classList.toggle('active', b.dataset.font === S.get('font'))); return; }
     if (k === 'mods') { U.$$('.mod-tile', page).forEach(b => b.classList.toggle('active', S.get('mods').includes(b.dataset.mod))); return; }
     const d = S.by[k], r = page.querySelector(`[data-row="${k}"]`);
@@ -94,7 +97,7 @@
       if (vis[0]) setNav(vis[0].target.dataset.group);
     }, { rootMargin: '-15% 0px -70% 0px' });
     U.$$('.set-group', page).forEach(s => io.observe(s));
-    setNav('behavior');
+    setNav(GROUPS[0][0]);
     links.forEach(a => a.addEventListener('click', e => {
       e.preventDefault();
       setNav(a.dataset.go);
@@ -128,7 +131,11 @@
       else if (b.dataset.ct) customAction(b.dataset.ct);
       else if (b.dataset.d) dataAction(b.dataset.d);
     });
+    page.addEventListener('keydown', e => {
+      if (e.target.id === 'setName' && e.key === 'Enter') { e.preventDefault(); e.target.blur(); }
+    });
     page.addEventListener('change', e => {
+      if (e.target.id === 'setName') { S.set('name', e.target.value); e.target.value = S.get('name'); return; }
       const n = e.target.closest('[data-num]');
       if (n) { S.set(n.dataset.k, Number(n.value)); n.value = S.get(n.dataset.k); }
     });
