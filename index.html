@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>larptype</title>
+<meta name="description" content="A smooth, minimal typing test for Roblox players, Roblox devs and vibecoders.">
+<meta name="theme-color" content="#0e0e14">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='rotate(-12 16 16)'%3E%3Crect x='4' y='4' width='24' height='24' rx='7' fill='%23a78bfa'/%3E%3Cpath d='M11 12l5 4-5 4' fill='none' stroke='%230e0e14' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 21h4' stroke='%230e0e14' stroke-width='3' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E">
+<script>
+(function () {
+  try {
+    var t = JSON.parse(localStorage.getItem('larptype:themeCache'));
+    if (t) { var s = document.documentElement.style; for (var k in t) s.setProperty(k, t[k]); }
+  } catch (e) {}
+  var q = 'JetBrains+Mono:wght@400;500;700';
+  try { q = JSON.parse(localStorage.getItem('larptype:fontCache')) || q; } catch (e) {}
+  var l = document.createElement('link');
+  l.rel = 'stylesheet'; l.id = 'fontLink'; l.dataset.q = q;
+  l.href = 'https://fonts.googleapis.com/css2?family=' + q + '&display=swap';
+  document.head.appendChild(l);
+  var n = q.split(':')[0].replace(/\+/g, ' ');
+  document.documentElement.style.setProperty('--font', "'" + n + "', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace");
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/ui.css">
+</head>
+<body class="booting">
+<div id="bg" aria-hidden="true"></div>
+<div id="timerBar" aria-hidden="true"><div id="timerBarFill"></div></div>
+
+<div id="app">
+  <header id="top">
+    <a id="logo" href="#/" aria-label="larptype home">
+      <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(-12 16 16)"><rect x="4" y="4" width="24" height="24" rx="7"/><path d="M11 12l5 4-5 4"/><path d="M18 21h4"/></g></svg>
+      <span class="logo-text">larptype</span>
+    </a>
+    <nav id="nav">
+      <a href="#/" class="nav-btn" data-route="test" data-icon="keyboard"><span>type</span></a>
+      <a href="#/stats" class="nav-btn" data-route="stats" data-icon="crown"><span>stats</span></a>
+      <a href="#/settings" class="nav-btn" data-route="settings" data-icon="settings"><span>settings</span></a>
+      <a href="#/about" class="nav-btn" data-route="about" data-icon="info"><span>about</span></a>
+    </nav>
+    <a id="levelChip" href="#/stats" aria-label="Level">
+      <span class="lvl-ring"><svg viewBox="0 0 36 36"><circle class="lvl-track" cx="18" cy="18" r="15"/><circle class="lvl-fill" cx="18" cy="18" r="15"/></svg><b id="lvlNum">1</b></span>
+      <span class="lvl-text"><span id="lvlTitle">Guest</span><span id="lvlXp">0 xp</span></span>
+    </a>
+  </header>
+
+  <main id="pages">
+    <section class="page active" id="page-test" data-page="test">
+      <div id="config">
+        <div class="cfg-sec" data-sec="pn"><div class="cfg-inner"><div class="pill">
+          <button class="cfg-btn" data-toggle="punctuation"><i data-icon="at"></i>punctuation</button>
+          <button class="cfg-btn" data-toggle="numbers"><i data-icon="hash"></i>numbers</button>
+        </div></div></div>
+        <div class="pill cfg-group" data-set="mode">
+          <button class="cfg-btn" data-v="time"><i data-icon="clock"></i>time</button>
+          <button class="cfg-btn" data-v="words"><i data-icon="type"></i>words</button>
+          <button class="cfg-btn" data-v="quote"><i data-icon="quote"></i>quote</button>
+          <button class="cfg-btn" data-v="zen"><i data-icon="leaf"></i>zen</button>
+          <button class="cfg-btn" data-v="custom"><i data-icon="wrench"></i>custom</button>
+        </div>
+        <div class="cfg-sec" data-sec="time"><div class="cfg-inner">
+          <div class="pill cfg-group" data-set="time">
+            <button class="cfg-btn" data-v="15">15</button>
+            <button class="cfg-btn" data-v="30">30</button>
+            <button class="cfg-btn" data-v="60">60</button>
+            <button class="cfg-btn" data-v="120">120</button>
+            <button class="cfg-btn" data-v="custom" aria-label="custom time"><i data-icon="wrench"></i></button>
+          </div>
+        </div></div>
+        <div class="cfg-sec" data-sec="words"><div class="cfg-inner">
+          <div class="pill cfg-group" data-set="words">
+            <button class="cfg-btn" data-v="10">10</button>
+            <button class="cfg-btn" data-v="25">25</button>
+            <button class="cfg-btn" data-v="50">50</button>
+            <button class="cfg-btn" data-v="100">100</button>
+            <button class="cfg-btn" data-v="custom" aria-label="custom word count"><i data-icon="wrench"></i></button>
+          </div>
+        </div></div>
+        <div class="cfg-sec" data-sec="quote"><div class="cfg-inner">
+          <div class="pill cfg-group" data-set="quoteLength">
+            <button class="cfg-btn" data-v="all">all</button>
+            <button class="cfg-btn" data-v="short">short</button>
+            <button class="cfg-btn" data-v="medium">medium</button>
+            <button class="cfg-btn" data-v="long">long</button>
+          </div>
+        </div></div>
+        <div class="cfg-sec" data-sec="custom"><div class="cfg-inner"><div class="pill">
+          <button class="cfg-btn" id="customEditBtn"><i data-icon="edit"></i>change text</button>
+        </div></div></div>
+      </div>
+
+      <div id="test">
+        <div id="wordsPanel">
+          <div class="panel-head">
+            <div id="testMeta">
+              <button id="modsBtn" class="meta-btn" data-tip="challenge mods"><i data-icon="flame"></i><span id="modsName"></span></button>
+              <span id="practiceTag" class="meta-tag"></span>
+            </div>
+            <div id="liveStats" aria-live="off">
+              <span id="lsTimer" class="ls"></span>
+              <span id="lsWpm" class="ls"></span>
+              <span id="lsAcc" class="ls"></span>
+              <span id="lsBurst" class="ls"></span>
+            </div>
+          </div>
+          <div id="wordsWrap">
+            <div id="wordsInner">
+              <div id="words"></div>
+              <div id="paceCaret" class="caret pace"></div>
+              <div id="caret" class="caret"></div>
+            </div>
+            <div id="focusMsg"><i data-icon="pointer"></i>click here or press any key to focus</div>
+          </div>
+          <div id="lava" aria-hidden="true"><div class="lava-surface"></div></div>
+        </div>
+        <input id="ti" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Typing input">
+        <div id="testActions">
+          <button id="restartBtn" class="pill-btn" data-icon="restart"><span>restart</span></button>
+        </div>
+      </div>
+
+      <div id="result" hidden></div>
+    </section>
+
+    <section class="page" id="page-stats" data-page="stats" hidden></section>
+    <section class="page" id="page-settings" data-page="settings" hidden></section>
+    <section class="page" id="page-about" data-page="about" hidden></section>
+    <section class="page" id="page-privacy" data-page="privacy" hidden></section>
+  </main>
+
+  <footer id="foot">
+    <div class="foot-left">
+      <a href="#/about" class="foot-link"><i data-icon="info"></i>about</a>
+      <a href="#/privacy" class="foot-link"><i data-icon="lock"></i>privacy</a>
+      <a href="#/about/contact" class="foot-link"><i data-icon="mail"></i>contact</a>
+      <button id="footShortcuts" class="foot-link"><i data-icon="command"></i>commands</button>
+    </div>
+    <div id="keyTips"></div>
+    <div class="foot-right">
+      <button id="themeBtn" class="foot-chip" data-tip="change theme"><span class="sw"><i></i><i></i><i></i></span><span id="themeName">vibecode</span></button>
+      <span class="ver">v1.1</span>
+    </div>
+  </footer>
+</div>
+
+<div id="capsWarn" role="status"><i data-icon="lock"></i>caps lock</div>
+<div id="toasts" aria-live="polite"></div>
+<div id="palette" hidden>
+  <div class="pal-backdrop"></div>
+  <div class="pal-box" role="dialog" aria-label="Command line">
+    <div class="pal-head">
+      <i data-icon="search"></i>
+      <span id="palCrumb"></span>
+      <input id="palInput" type="text" autocomplete="off" spellcheck="false" placeholder="type a command">
+    </div>
+    <div id="palList" role="listbox"><div id="palHi"></div><div id="palItems"></div></div>
+    <div class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>enter</kbd> select</span><span><kbd>esc</kbd> back</span></div>
+  </div>
+</div>
+<div id="modalRoot"></div>
+<div id="tip" role="tooltip"></div>
+<canvas id="fxCanvas" aria-hidden="true"></canvas>
+
+<script src="js/util.js"></script>
+<script src="js/data/themes.js"></script>
+<script src="js/data/words.js"></script>
+<script src="js/data/quotes.js"></script>
+<script src="js/store.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/generator.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/view.js"></script>
+<script src="js/test.js"></script>
+<script src="js/results.js"></script>
+<script src="js/replay.js"></script>
+<script src="js/palette.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

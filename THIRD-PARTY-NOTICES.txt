@@ -1,0 +1,35 @@
+larptype third-party notices
+
+larptype is an independent project inspired by Monkeytype (https://monkeytype.com).
+It does not contain Monkeytype code and is not affiliated with or endorsed by Monkeytype.
+
+Roblox and Robux are trademarks of Roblox Corporation. larptype is fan-made and is not
+affiliated with, endorsed by or sponsored by Roblox Corporation.
+
+
+Lucide icons (https://lucide.dev)
+---------------------------------
+The icon shapes in js/util.js come from Lucide.
+
+ISC License
+
+Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT).
+All other copyright (c) for Lucide are held by Lucide Contributors 2022.
+
+Permission to use, copy, modify, and/or distribute this software for any purpose with or
+without fee is hereby granted, provided that the above copyright notice and this permission
+notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS
+SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+
+
+Fonts
+-----
+All fonts are loaded at runtime from Google Fonts (https://fonts.google.com) and are not
+bundled with larptype. Each font is distributed by Google under its own open license, in most
+cases the SIL Open Font License 1.1.
