@@ -106,7 +106,7 @@ body.typing.hide-cursor, body.typing.hide-cursor * { cursor: none !important; }
 }
 .cfg-btn:hover { color: var(--text); }
 .cfg-group > .cfg-btn.active { color: var(--bg); }
-.cfg-btn[data-toggle].active { color: var(--main); background: color-mix(in srgb, var(--main) 16%, transparent); }
+.cfg-btn[data-toggle].active, .cfg-btn[data-lang].active { color: var(--main); background: color-mix(in srgb, var(--main) 16%, transparent); }
 .cfg-btn:active { transform: scale(.94); }
 .cfg-btn:focus-visible, .meta-btn:focus-visible, .foot-link:focus-visible, .foot-chip:focus-visible, .nav-btn:focus-visible { outline: 2px solid var(--main); outline-offset: -2px; }
 .cfg-btn i svg, .meta-btn i svg { width: 13px; height: 13px; }

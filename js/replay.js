@@ -142,7 +142,7 @@
       c.fillStyle = th.sub; c.font = `500 20px ${fam}`; c.fillText(k, x, 430);
       c.fillStyle = th.text; c.font = `600 34px ${fam}`; c.fillText(String(v), x, 476);
     });
-    const tags = [r.punct && 'punctuation', r.nums && 'numbers', ...r.mods.map(m => LT.MODS[m].name)].filter(Boolean).join('  ·  ');
+    const tags = [r.lang === 'simple' && 'simple', r.punct && 'punctuation', r.nums && 'numbers', ...r.mods.map(m => LT.MODS[m].name)].filter(Boolean).join('  ·  ');
     c.fillStyle = th.sub; c.font = `500 20px ${fam}`; c.fillText(tags, sx, 530);
     const data = r.chart.wpm, raw = r.chart.raw;
     if (data.length > 1) {

@@ -23,7 +23,7 @@
     { k: 'customLimit', def: 0, type: 'num', min: 0, max: 5000, hidden: true },
     { k: 'name', def: '', type: 'name', hidden: true },
 
-    { k: 'language', def: 'roblox', opts: ['roblox'], hidden: true },
+    { k: 'language', def: 'roblox', opts: ['roblox', 'simple'], hidden: true },
     { k: 'difficulty', group: 'behavior', icon: 'bolt', label: 'difficulty', def: 'normal', opts: ['normal', 'expert', 'master'], desc: 'Expert fails the test when you submit a wrong word. Master fails it on any wrong key.' },
     { k: 'quickRestart', group: 'behavior', icon: 'restart', label: 'quick restart', def: 'tab', opts: ['off', 'tab', 'esc', 'enter'], desc: 'Key that instantly starts a new test. Off: press tab then enter on the restart button.' },
     { k: 'stopOnError', group: 'behavior', icon: 'alert', label: 'stop on error', def: 'off', opts: ['off', 'letter', 'word'], desc: 'Letter: wrong keys are not typed. Word: space is blocked until the word is right.' },

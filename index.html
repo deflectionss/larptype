@@ -26,8 +26,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap">
-<link rel="stylesheet" href="css/base.css?v=1.2">
-<link rel="stylesheet" href="css/ui.css?v=1.2">
+<link rel="stylesheet" href="css/base.css?v=1.3">
+<link rel="stylesheet" href="css/ui.css?v=1.3">
 </head>
 <body class="booting">
 <div id="bg" aria-hidden="true"></div>
@@ -42,6 +42,7 @@
     <nav id="nav">
       <a href="#/" class="nav-btn" data-route="test" data-icon="keyboard"><span>type</span></a>
       <a href="#/stats" class="nav-btn" data-route="stats" data-icon="crown"><span>stats</span></a>
+      <a href="#/notes" class="nav-btn" data-route="notes" data-icon="note"><span>notes</span></a>
       <a href="#/settings" class="nav-btn" data-route="settings" data-icon="settings"><span>settings</span></a>
       <a href="#/about" class="nav-btn" data-route="about" data-icon="info"><span>about</span></a>
     </nav>
@@ -57,6 +58,7 @@
         <div class="cfg-sec" data-sec="pn"><div class="cfg-inner"><div class="pill">
           <button class="cfg-btn" data-toggle="punctuation"><i data-icon="at"></i>punctuation</button>
           <button class="cfg-btn" data-toggle="numbers"><i data-icon="hash"></i>numbers</button>
+          <button class="cfg-btn" data-lang="simple" data-tip="short, easy words"><i data-icon="feather"></i>simple</button>
         </div></div></div>
         <div class="pill cfg-group" data-set="mode">
           <button class="cfg-btn" data-v="time"><i data-icon="clock"></i>time</button>
@@ -130,6 +132,7 @@
     </section>
 
     <section class="page" id="page-stats" data-page="stats" hidden></section>
+    <section class="page" id="page-notes" data-page="notes" hidden></section>
     <section class="page" id="page-settings" data-page="settings" hidden></section>
     <section class="page" id="page-about" data-page="about" hidden></section>
     <section class="page" id="page-privacy" data-page="privacy" hidden></section>
@@ -145,7 +148,7 @@
     <div id="keyTips"></div>
     <div class="foot-right">
       <button id="themeBtn" class="foot-chip" data-tip="change theme"><span class="sw"><i></i><i></i><i></i></span><span id="themeName">vibecode</span></button>
-      <span class="ver">v1.2</span>
+      <span class="ver">v1.3</span>
     </div>
   </footer>
 </div>
@@ -168,23 +171,24 @@
 <div id="tip" role="tooltip"></div>
 <canvas id="fxCanvas" aria-hidden="true"></canvas>
 
-<script src="js/util.js?v=1.2"></script>
-<script src="js/data/themes.js?v=1.2"></script>
-<script src="js/data/words.js?v=1.2"></script>
-<script src="js/data/quotes.js?v=1.2"></script>
-<script src="js/store.js?v=1.2"></script>
-<script src="js/theme.js?v=1.2"></script>
-<script src="js/fx.js?v=1.2"></script>
-<script src="js/generator.js?v=1.2"></script>
-<script src="js/progress.js?v=1.2"></script>
-<script src="js/chart.js?v=1.2"></script>
-<script src="js/view.js?v=1.2"></script>
-<script src="js/test.js?v=1.2"></script>
-<script src="js/results.js?v=1.2"></script>
-<script src="js/replay.js?v=1.2"></script>
-<script src="js/palette.js?v=1.2"></script>
-<script src="js/settings.js?v=1.2"></script>
-<script src="js/stats.js?v=1.2"></script>
-<script src="js/main.js?v=1.2"></script>
+<script src="js/util.js?v=1.3"></script>
+<script src="js/data/themes.js?v=1.3"></script>
+<script src="js/data/words.js?v=1.3"></script>
+<script src="js/data/quotes.js?v=1.3"></script>
+<script src="js/store.js?v=1.3"></script>
+<script src="js/theme.js?v=1.3"></script>
+<script src="js/fx.js?v=1.3"></script>
+<script src="js/generator.js?v=1.3"></script>
+<script src="js/progress.js?v=1.3"></script>
+<script src="js/chart.js?v=1.3"></script>
+<script src="js/view.js?v=1.3"></script>
+<script src="js/test.js?v=1.3"></script>
+<script src="js/results.js?v=1.3"></script>
+<script src="js/replay.js?v=1.3"></script>
+<script src="js/palette.js?v=1.3"></script>
+<script src="js/settings.js?v=1.3"></script>
+<script src="js/stats.js?v=1.3"></script>
+<script src="js/notes.js?v=1.3"></script>
+<script src="js/main.js?v=1.3"></script>
 </body>
 </html>

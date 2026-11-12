@@ -1,14 +1,14 @@
 (() => {
   const U = LT.U, S = LT.S, DB = LT.DB, P = LT.Progress;
   const St = {};
-  let page, chart = null, range = 100, kbMode = 'accuracy';
+  let page, chart = null, range = 100, kbMode = 'accuracy', pbPack = null;
   const LAYOUTS = { qwerty: ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'], azerty: ['azertyuiop', 'qsdfghjklm', 'wxcvbn'], qwertz: ['qwertzuiop', 'asdfghjkl', 'yxcvbnm'] };
 
-  const pbCell = (mode, m2) => {
+  const pbCell = (mode, m2, pack) => {
     let best = null;
     Object.keys(DB.pbs).forEach(k => {
       const [md, v, lang, p, n] = k.split('|');
-      if (md !== mode || v !== String(m2)) return;
+      if (md !== mode || v !== String(m2) || lang !== pack) return;
       const e = DB.pbs[k];
       if (!best || e.wpm > best.wpm) best = Object.assign({ lang, p: p === '1', n: n === '1' }, e);
     });
@@ -89,6 +89,7 @@
     const pr = DB.profile, info = P.levelInfo(pr.xp), ok = DB.results.filter(r => !r.failed);
     const last10 = ok.slice(-10), best = ok.length ? Math.max(...ok.map(r => r.wpm)) : 0;
     const earned = Object.keys(pr.badges).length;
+    const pack = LT.PACKS[pbPack] ? pbPack : S.get('language');
     page.innerHTML = `<div class="st-wrap">
       <div class="card prof"><div class="prof-av"><b>${info.lvl}</b></div>
         <div class="prof-mid"><div class="prof-name" id="profName">${nameView()}</div><div class="muted" id="profSub">${subLine()}</div><div class="xp-bar"><i style="transform:scaleX(${info.pct})"></i></div></div>
@@ -100,8 +101,8 @@
           <div class="tot"><div class="k">avg last 10</div><div class="v">${last10.length ? Math.round(U.mean(last10.map(r => r.wpm))) : 0}</div></div>
           <div class="tot"><div class="k">badges</div><div class="v">${earned}/${P.BADGES.length}</div></div>
         </div></div>
-      <div class="card"><div class="st-head"><div class="h-sec">${U.icon('crown')}personal bests</div><span class="muted" style="font-size:.72rem">@ punctuation · # numbers</span></div>
-        <div class="st-grid2"><div class="pb-table">${[15, 30, 60, 120].map(v => pbCell('time', v)).join('')}</div><div class="pb-table">${[10, 25, 50, 100].map(v => pbCell('words', v)).join('')}</div></div></div>
+      <div class="card"><div class="st-head"><div class="h-sec">${U.icon('crown')}personal bests</div><div class="st-head-r"><span class="muted" style="font-size:.72rem">@ punctuation · # numbers</span><div class="seg" data-seg="pbPack">${LT.PACK_ORDER.map(p => `<button class="${pack === p ? 'active' : ''}" data-v="${p}">${U.esc(LT.PACKS[p].name)}</button>`).join('')}</div></div></div>
+        <div class="st-grid2"><div class="pb-table">${[15, 30, 60, 120].map(v => pbCell('time', v, pack)).join('')}</div><div class="pb-table">${[10, 25, 50, 100].map(v => pbCell('words', v, pack)).join('')}</div></div></div>
       <div class="card"><div class="st-head"><div class="h-sec">${U.icon('chart')}progress</div><div class="seg" data-seg="range">${[[50, 'last 50'], [100, 'last 100'], [100000, 'all']].map(([v, l]) => `<button class="${range === v ? 'active' : ''}" data-v="${v}">${l}</button>`).join('')}</div></div>
         ${ok.length > 1 ? '<div class="st-chart" id="stChart"></div>' : `<div class="empty-state">Finish a couple of tests to see your progress chart.</div>`}</div>
       <div class="card">${heat()}</div>
@@ -140,6 +141,7 @@
           if (chart) chart.setWindow(range);
           return;
         }
+        if (k === 'pbPack') pbPack = v;
         if (k === 'kbMode') kbMode = v;
         if (k === 'kbLayout') U.store.set('kbLayout', v);
         const y = scrollY;

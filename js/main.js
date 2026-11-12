@@ -5,7 +5,7 @@
   LT.Router = Router;
   let needsNew = false, navToken = 0;
 
-  const PAGES = { test: '#/', stats: '#/stats', settings: '#/settings', about: '#/about', privacy: '#/privacy' };
+  const PAGES = { test: '#/', stats: '#/stats', notes: '#/notes', settings: '#/settings', about: '#/about', privacy: '#/privacy' };
   const navInd = () => FX.indicator(U.$('#nav'));
   const ext = (href, label) => `<a href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
   const hashParts = () => location.hash.replace(/^#\/?/, '').split('/');
@@ -18,9 +18,12 @@
   const aboutHTML = () => `<div class="about">
     <div class="card"><h2>larptype</h2><p>A minimal typing test for Roblox players, Roblox devs and vibecoders. Start typing and the test begins on your first key. The words mix Roblox slang, Studio and scripting terms, vibecoding lingo and ad metrics like ctr, cpm and qptr. Everything is saved in this browser: stats, personal bests, xp, badges and settings. No account, no server.</p></div>
     <div class="card"><h2>modes</h2><p><b>time</b> types for a set number of seconds. <b>words</b> ends after a set number of words. <b>quote</b> gives you a full sentence about building games or shipping code, or a line of Luau. <b>zen</b> has no target at all, finish it with shift + enter. <b>custom</b> uses any text you paste.</p>
+    <p><b>simple</b> works with time and words. It swaps the long Studio terms for short, everyday words mixed with short Roblox and dev words. It keeps its own personal bests.</p>
     <p><b>challenge mods</b> stack on top of any mode: lava raises a lava line on every mistake, blind hides errors, memory fades the words out, mirror and upside down flip them, random case scrambles capitals and no backspace makes every key final.</p></div>
     <div class="card"><h2>stats</h2><p><b>wpm</b> counts the characters of correctly typed words, spaces included, divided by five, per minute. <b>raw</b> counts every keystroke, mistakes too. <b>accuracy</b> is correct keystrokes over all keystrokes, so fixed mistakes still count. <b>consistency</b> measures how even your raw speed was from one second to the next.</p>
     <p><b>weak keys</b> are found from how often you miss each letter and how long it takes you to press it compared to your other keys. The weak key practice builds a test from words that use those letters a lot.</p></div>
+    <div class="card"><h2>notes</h2><p>A plain text notepad that lives in this browser. Make as many notes as you like, pin the important ones and search through all of them. Notes save as you type. Copy a note in one click, or download it as a .txt or .md file.</p>
+    <p><b>tab</b> indents and <b>shift + tab</b> outdents. Lists keep going when you press enter: start a line with <b>-</b>, <b>*</b> or <b>1.</b> and press enter twice to stop. <b>ctrl + s</b> saves right away.</p></div>
     <div class="card"><h2>shortcuts</h2><div class="kb-list">
       <span><kbd>tab</kbd></span><span>new test (quick restart key can be changed in settings)</span>
       <span><kbd>shift</kbd> + <kbd>tab</kbd></span><span>repeat the same test</span>
@@ -42,13 +45,13 @@
   const privacyHTML = () => `<div class="about">
     <div class="card"><h2>privacy</h2>
       <p>larptype has no accounts, no ads, no analytics and no tracking cookies.</p>
-      <p><b>What is saved.</b> Your name, settings, test results, personal bests, key stats, xp and badges are saved in your browser's local storage, on this device only. larptype never sends them anywhere.</p>
+      <p><b>What is saved.</b> Your name, settings, test results, personal bests, key stats, xp, badges and notes are saved in your browser's local storage, on this device only. larptype never sends them anywhere.</p>
       <p><b>Fonts.</b> Fonts are loaded from Google Fonts. To download them, your browser connects to Google's servers, which can see your IP address. Google explains how it handles this in its ${ext('https://policies.google.com/privacy', 'privacy policy')}.</p>
       <p><b>Hosting.</b> The service that hosts this website may keep standard server logs, such as IP addresses and which pages were requested.</p>
-      <p><b>Clipboard and files.</b> larptype only uses your clipboard when you press a copy button, and only creates a file when you press export or save.</p>
-      <p><b>Your control.</b> Export your history in settings, data. Delete everything with clear stats in the same place, or by clearing this site's data in your browser.</p>
+      <p><b>Clipboard and files.</b> larptype only uses your clipboard when you press a copy button, and only creates a file when you press export, save or download.</p>
+      <p><b>Your control.</b> Export your history in settings, data. Delete everything with clear stats in the same place, or by clearing this site's data in your browser. Notes are deleted one by one with the trash button in notes, or all at once by clearing this site's data. Clear stats does not touch your notes.</p>
       <p><b>Contact.</b> Questions about privacy: ${contactLine}.</p>
-      <p class="muted stamp">Last updated November 5, 2026.</p>
+      <p class="muted stamp">Last updated November 12, 2026.</p>
     </div>
     <div class="card"><h2>credits</h2>
       <p>Inspired by ${ext('https://monkeytype.com', 'Monkeytype')}. Not affiliated with Monkeytype or Roblox Corporation. Full credits are on the <a href="#/about">about</a> page.</p>
@@ -62,6 +65,7 @@
     if (prev === 'test' && T.state === 'running') T.newTest();
     if (prev === 'settings') LT.Settings.leave();
     if (prev === 'stats') LT.Stats.leave();
+    if (prev === 'notes' && name !== 'notes') LT.Notes.leave();
     if (!instant && from !== to) {
       from.classList.add('leave');
       await U.wait(U.ms(150));
@@ -70,6 +74,7 @@
       from.classList.remove('leave', 'active');
     } else if (from !== to) { from.hidden = true; from.classList.remove('active'); }
     Router.current = name;
+    body.classList.toggle('route-notes', name === 'notes');
     if (name === 'stats') LT.Stats.show();
     if (name === 'settings') LT.Settings.show();
     if (name === 'about') { to.innerHTML = aboutHTML(); }
@@ -79,6 +84,7 @@
     void to.offsetWidth;
     to.classList.add('active');
     to.classList.remove('enter');
+    if (name === 'notes') LT.Notes.show();
     scrollTo(0, 0);
     if (anchor) toAnchor(anchor);
     U.$$('#nav .nav-btn').forEach(a => a.classList.toggle('active', a.dataset.route === name));
@@ -102,6 +108,7 @@
   const syncConfig = () => {
     const mode = S.get('mode');
     U.$$('#config [data-toggle]').forEach(b => b.classList.toggle('active', !!S.get(b.dataset.toggle)));
+    U.$$('#config [data-lang]').forEach(b => b.classList.toggle('active', S.get('language') === b.dataset.lang));
     U.$$('#config [data-set]').forEach(g => {
       const k = g.dataset.set, v = String(S.get(k));
       const custom = (k === 'time' || k === 'words') && !isPreset(k, v);
@@ -198,6 +205,7 @@
       const b = e.target.closest('button');
       if (!b) return;
       if (b.dataset.toggle) { S.toggle(b.dataset.toggle); return; }
+      if (b.dataset.lang) { S.set('language', S.get('language') === b.dataset.lang ? 'roblox' : b.dataset.lang); return; }
       if (b.id === 'customEditBtn') { LT.Settings.customTextModal(); return; }
       const g = b.closest('[data-set]');
       if (!g) return;
@@ -221,6 +229,7 @@
     document.addEventListener('lt:modalclose', () => setTimeout(T.focus, 30));
     const relayout = U.debounce(() => {
       if (Router.current === 'test' && !LT.Results.isOpen()) V.relayout();
+      if (Router.current === 'notes') LT.Notes.relayout();
       U.$$('#config .cfg-group').forEach(FX.indicator);
       navInd();
     }, 90);

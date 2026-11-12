@@ -42,9 +42,10 @@
   };
 
   const toasts = () => document.getElementById('toasts');
-  FX.toast = (msg, { title = '', icon = 'info', type = '', dur = 3200 } = {}) => {
+  FX.toast = (msg, { title = '', icon = 'info', type = '', dur = 3200, action = null } = {}) => {
     const w = U.el('div', 'toast-w');
-    w.innerHTML = `<div><div class="toast ${type}"><span class="t-ico">${U.icon(icon)}</span><div>${title ? `<div class="t-title">${U.esc(title)}</div>` : ''}<div class="t-msg">${U.esc(msg)}</div></div></div></div>`;
+    w.innerHTML = `<div><div class="toast ${type}"><span class="t-ico">${U.icon(icon)}</span><div>${title ? `<div class="t-title">${U.esc(title)}</div>` : ''}<div class="t-msg">${U.esc(msg)}</div></div>${action ? `<button class="t-act">${U.esc(action.label)}</button>` : ''}</div></div>`;
+    if (action) w.querySelector('.t-act').addEventListener('click', () => action.run());
     toasts().appendChild(w);
     const kill = () => {
       if (w.dataset.out) return;

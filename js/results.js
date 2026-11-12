@@ -59,7 +59,7 @@
     test.hidden = true; cfg.classList.add('off');
     const pbDelta = prev && !r.failed ? r.wpm - prev.wpm : null;
     const firstPb = !invalid && !prev && DB.pbEligible(r);
-    const tags = [r.punct && 'punctuation', r.nums && 'numbers', r.diff !== 'normal' && r.diff, ...r.mods.map(m => LT.MODS[m].name)].filter(Boolean);
+    const tags = [r.lang === 'simple' && 'simple', r.punct && 'punctuation', r.nums && 'numbers', r.diff !== 'normal' && r.diff, ...r.mods.map(m => LT.MODS[m].name)].filter(Boolean);
     const [c, x, e, m] = r.chars;
     const showPb = isPb && !invalid && DB.pbEligible(r);
     const qr = S.get('quickRestart');

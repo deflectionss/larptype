@@ -109,7 +109,7 @@
   };
 
   Gen.weakWords = (letters, count = 50) => {
-    const all = LT.PACKS.roblox.words.filter(w => /^[a-z]+$/.test(w));
+    const all = (LT.PACKS[S.get('language')] || LT.PACKS.roblox).words.filter(w => /^[a-z]+$/.test(w));
     const set = new Set(letters);
     const scored = all.map(w => {
       let s = 0;

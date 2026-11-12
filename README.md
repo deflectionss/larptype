@@ -13,9 +13,9 @@ To host it, upload the folder to any static host (GitHub Pages, Netlify, Vercel,
 ## Features
 
 - Modes: time (15/30/60/120/custom), words (10/25/50/100/custom), quote, zen, custom text
-- One word list: roblox slang, studio and scripting terms, luau keywords, vibecoding lingo and ad metrics (ctr, cpm, qptr, roas...)
+- Two word lists: roblox (roblox slang, studio and scripting terms, luau keywords, vibecoding lingo and ad metrics like ctr, cpm, qptr, roas) and simple (short everyday words mixed with short roblox and dev words, 6 letters max). Each list keeps its own personal bests
 - Quotes: game dev and shipping lines plus Luau one-liners
-- Punctuation and numbers toggles
+- Punctuation, numbers and simple toggles
 - Spring-animated caret (4 styles, 3 speeds), smooth line scroll, sliding indicators, staggered result screen
 - Results: wpm, raw, accuracy, consistency, characters, animated chart with gliding hover and arrow-key scrubbing, words history with speed heatmap, replay, share card (PNG)
 - Contact: about page and privacy page (Discord and email)
@@ -27,15 +27,17 @@ To host it, upload the folder to any static host (GitHub Pages, Netlify, Vercel,
 - Difficulty (normal / expert / master), stop on error, confidence, freedom, min wpm / accuracy
 - 30 themes + custom theme editor, 21 fonts, background patterns
 - Command line (`esc` or `ctrl+k`): fuzzy search over every setting, theme, font and action, live theme preview
+- Notes: local plain text notepad with a sidebar, search, pins, autosave, tab indent, auto-continued lists, undo on delete, copy and download as .txt or .md
 - Everything saved in the browser (localStorage). Export / import settings, export history as JSON or CSV
 
 ## Files
 
 - `index.html` page shell
-- `css/base.css` layout, test area, caret · `css/ui.css` results, settings, stats, command line, modals
+- `css/base.css` layout, test area, caret · `css/ui.css` results, settings, stats, notes, command line, modals
 - `js/data/` themes, word packs, quotes
 - `js/store.js` settings schema + saved data · `js/theme.js` themes and fonts · `js/fx.js` springs, toasts, modals, particles
 - `js/generator.js` word generation · `js/test.js` typing engine · `js/view.js` rendering, caret, scrolling
+- `js/notes.js` notepad
 - `js/results.js`, `js/replay.js`, `js/chart.js`, `js/progress.js`, `js/palette.js`, `js/settings.js`, `js/stats.js`, `js/main.js`
 
 To add words, edit the lists in `js/data/words.js`. To add a theme, add a row in `js/data/themes.js`.
@@ -45,7 +47,7 @@ To add words, edit the lists in `js/data/words.js`. To add a theme, add a row in
 Before each push, bump the version in `index.html`: the `?v=` on every css and js link and the footer `v1.x`. Browsers then fetch the new files on a normal refresh instead of using their 10 minute cache.
 
 ```bash
-sed -i 's/?v=1\.2/?v=1.3/g; s/>v1\.2</>v1.3</' index.html
+sed -i 's/?v=1\.3/?v=1.4/g; s/>v1\.3</>v1.4</' index.html
 ```
 
 ## Privacy and credits

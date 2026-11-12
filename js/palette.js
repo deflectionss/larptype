@@ -55,6 +55,7 @@
         { label: 'quote length…', icon: 'quote', run: () => setMenu('quoteLength', { label: 'quote length', opts: S.by.quoteLength.opts }) },
         { label: 'punctuation', icon: 'at', right: optLabel(S.get('punctuation')), run: () => S.toggle('punctuation') },
         { label: 'numbers', icon: 'hash', right: optLabel(S.get('numbers')), run: () => S.toggle('numbers') },
+        { label: 'simple words', icon: 'feather', right: optLabel(S.get('language') === 'simple'), run: () => S.set('language', S.get('language') === 'simple' ? 'roblox' : 'simple') },
         { label: 'theme…', icon: 'palette', right: S.get('theme'), run: themeMenu },
         { label: 'random theme now', icon: 'shuffle', run: () => { const pool = Object.keys(LT.THEMES).filter(n => n !== S.get('theme')); S.set('theme', U.pick(pool)); } },
         { label: 'font…', icon: 'type', right: S.get('font'), run: fontMenu },
@@ -63,6 +64,8 @@
         { label: 'set name…', icon: 'user', right: U.esc(S.get('name')), run: () => ({ title: 'your name', input: { value: S.get('name'), placeholder: 'your name, up to 24 characters', submit: v => { S.set('name', v); FX.toast(`Hi ${S.get('name')}!`, { icon: 'user' }); } } }) },
         { label: 'go to settings', icon: 'settings', run: go('#/settings') },
         { label: 'go to stats', icon: 'crown', run: go('#/stats') },
+        { label: 'go to notes', icon: 'note', run: go('#/notes') },
+        { label: 'new note', icon: 'plus', run: () => LT.Notes.newNote() },
         { label: 'go to about', icon: 'info', run: go('#/about') },
         { label: 'export settings', icon: 'upload', run: () => U.copy(S.export()).then(() => FX.toast('Settings code copied to clipboard.', { icon: 'copy' })) },
         { label: 'import settings', icon: 'download', run: () => ({ title: 'import settings', input: { placeholder: 'paste a settings code', submit: v => FX.toast(S.import(v) ? 'Settings imported.' : 'That code is not valid.', { icon: 'check' }) } }) },
@@ -216,6 +219,7 @@
     root.classList.remove('open');
     setTimeout(() => { if (!open) root.hidden = true; }, U.ms(220) + 20);
     LT.Test.focus();
+    LT.Notes.refocus();
   };
 
   P.init = () => {

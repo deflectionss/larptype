@@ -64,8 +64,31 @@ kpi kpis uplift lift variant analytics attribution organic paid promo promoted p
 youtuber shorts viral trending recommended discovery homepage algorithm spend payout revenue rewarded portal immersive
 billboard brand brands collab giveaway acquisition qualified sessions playtime search`;
 
+  const common = `the be to of and a in that have it for not on with he as you do at this but his by from they we say her
+she or an will my one all would there their what so up out if about who get which go me when make can like time no
+just him know take people into year your good some could them see other than then now look only come its over think
+also back after use two how our work first well way even new want any these give day most us big small old long short
+fast slow hot cold red blue green black white light dark hand head eye face home house room door road car tree sun moon
+star fire water air land sea city town world life love help play game fun run walk jump sit stand read write word line
+page book story name friend family man child kid boy girl dog cat food eat drink sleep open close start stop turn move
+push pull find keep hold show tell ask call try need feel seem leave put mean let begin end left right next last same
+each every many much more less few both own sure true real best better great high low near far here where why yes ok
+off down hard easy late soon yet still again never always often once team three four five six ten`;
+
+  const short = `obby noob robux lag afk pet egg gem coin cash win lose map vote spawn boss loot drop shop trade rare epic quest
+level rank skin hat emote dance chat party tower lava brick part build tool sword gear glitch ping badge stage round
+lobby server avatar studs bacon guest vip codes event raid wave mob chest crate spin daily streak hatch merge craft
+farm grind tycoon hub zone portal tag hide seek script local nil self tween lerp ray wait task signal remote client
+module rig weld mesh decal sound frame gui camera input ship bug fix code test lint diff patch commit branch deploy
+prompt vibe agent model token api json git npm bash debug prod repo cache async await loop array string const null
+docs plan undo redo ads ctr cpm roas reach clicks views promo brand plays visits likes budget spend`;
+
   const split = s => [...new Set(s.split(/\s+/).filter(Boolean))];
   const words = [...new Set([roblox, robloxDev, luau, vibe, ads].flatMap(split))];
-  LT.PACKS = { roblox: { name: 'roblox', desc: 'roblox, studio, vibecoding and ad words', words } };
-  LT.PACK_ORDER = ['roblox'];
+  const simple = [...new Set([common, short].flatMap(split))].filter(w => w.length <= 6);
+  LT.PACKS = {
+    roblox: { name: 'roblox', desc: 'roblox, studio, vibecoding and ad words', words },
+    simple: { name: 'simple', desc: 'short everyday words mixed with short roblox and dev words', words: simple }
+  };
+  LT.PACK_ORDER = ['roblox', 'simple'];
 })();
